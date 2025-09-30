@@ -400,7 +400,7 @@ class AsyncClient(BaseClient):
                 # then we just move forward hour by hour until we find at least one
                 # trade or reach present moment
                 while True:
-                    end_ts = start_ts + (60 * 60 * 1000)
+                    end_ts = start_ts + (60 * 60 * 1000) if start_ts else None
                     trades = await self.get_aggregate_trades(
                         symbol=symbol, startTime=start_ts, endTime=end_ts
                     )
