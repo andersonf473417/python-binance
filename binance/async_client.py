@@ -400,7 +400,7 @@ class AsyncClient(BaseClient):
                 # then we just move forward hour by hour until we find at least one
                 # trade or reach present moment
                 while True:
-                    end_ts = start_ts + (60 * 60 * 1000)
+                    end_ts = start_ts + (60 * 60 * 1000) if start_ts is not None else None
                     trades = await self.get_aggregate_trades(
                         symbol=symbol, startTime=start_ts, endTime=end_ts
                     )
@@ -1844,7 +1844,7 @@ class AsyncClient(BaseClient):
 
     async def futures_leverage_bracket(self, **params):
         return await self._request_futures_api(
-            "get", "leverageBracket", True, data=params
+            "get", "leverageBracket", data=params
         )
 
     async def futures_account_transfer(self, **params):
@@ -2013,7 +2013,7 @@ class AsyncClient(BaseClient):
                 convert_list_to_json_array(params["origclientorderidlist"])
             )
         return await self._request_futures_api(
-            "delete", "batchOrders", True, data=params, force_params=True
+            "delete", "batchOrders", data=params, force_params=True
         )
 
     async def futures_countdown_cancel_all(self, **params):
@@ -2274,7 +2274,7 @@ class AsyncClient(BaseClient):
                 convert_list_to_json_array(params["origclientorderidlist"])
             )
         return await self._request_futures_coin_api(
-            "delete", "batchOrders", True, data=params
+            "delete", "batchOrders", data=params
         )
 
     async def futures_coin_account_balance(self, **params):
